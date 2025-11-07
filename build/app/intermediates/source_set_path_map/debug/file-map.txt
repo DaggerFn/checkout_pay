@@ -1,0 +1,12 @@
+com.example.checkout_pay.app-core-1.6.0-0 /home/gust/.gradle/caches/transforms-3/252aff0909abc7550b48962a77c1bc76/transformed/core-1.6.0/res
+com.example.checkout_pay.app-jetified-annotation-experimental-1.1.0-1 /home/gust/.gradle/caches/transforms-3/75e45d5f64313291a39b14fc1b53ab41/transformed/jetified-annotation-experimental-1.1.0/res
+com.example.checkout_pay.app-jetified-window-java-1.0.0-beta04-2 /home/gust/.gradle/caches/transforms-3/93b80f4f4bec65d57c0ebc39db91c70b/transformed/jetified-window-java-1.0.0-beta04/res
+com.example.checkout_pay.app-jetified-window-1.0.0-beta04-3 /home/gust/.gradle/caches/transforms-3/abe1828c8a842d5441b36aac1dd52569/transformed/jetified-window-1.0.0-beta04/res
+com.example.checkout_pay.app-debug-4 /home/gust/Documentos/fluter-project/checkout_pay/android/app/src/debug/res
+com.example.checkout_pay.app-main-5 /home/gust/Documentos/fluter-project/checkout_pay/android/app/src/main/res
+com.example.checkout_pay.app-pngs-6 /home/gust/Documentos/fluter-project/checkout_pay/build/app/generated/res/pngs/debug
+com.example.checkout_pay.app-resValues-7 /home/gust/Documentos/fluter-project/checkout_pay/build/app/generated/res/resValues/debug
+com.example.checkout_pay.app-rs-8 /home/gust/Documentos/fluter-project/checkout_pay/build/app/generated/res/rs/debug
+com.example.checkout_pay.app-mergeDebugResources-9 /home/gust/Documentos/fluter-project/checkout_pay/build/app/intermediates/incremental/debug/mergeDebugResources/merged.dir
+com.example.checkout_pay.app-mergeDebugResources-10 /home/gust/Documentos/fluter-project/checkout_pay/build/app/intermediates/incremental/debug/mergeDebugResources/stripped.dir
+com.example.checkout_pay.app-merged_res-11 /home/gust/Documentos/fluter-project/checkout_pay/build/app/intermediates/merged_res/debug

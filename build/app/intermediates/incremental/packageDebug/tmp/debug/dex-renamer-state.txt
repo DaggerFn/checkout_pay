@@ -1,0 +1,4 @@
+#Fri Nov 07 20:37:53 BRT 2025
+base.0=/home/gust/Documentos/fluter-project/checkout_pay/build/app/intermediates/dex/debug/mergeDexDebug/classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
