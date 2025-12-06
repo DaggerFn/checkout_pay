@@ -51,8 +51,15 @@ class ContasEmDiaApp extends StatelessWidget {
               settings: settings,
             );
           case '/cadastro_edicao_conta':
+            print('--- ROTA: /cadastro_edicao_conta ---');
+            print('ARGUMENTOS RECEBIDOS: ${settings.arguments}');
+
             final args = settings.arguments as Map<String, dynamic>?;
             final contaArg = args != null && args['conta'] is Conta ? args['conta'] as Conta : null;
+            
+            print('CONTA EXTRAÍDA (ID): ${contaArg?.id}');
+            print('------------------------------------');
+
             return MaterialPageRoute(
               builder: (context) => CadastroEdicaoContaScreen(conta: contaArg),
               settings: settings,

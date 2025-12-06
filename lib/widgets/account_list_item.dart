@@ -7,6 +7,7 @@ class AccountListItem extends StatelessWidget {
   final String date;
   final String? time;
   final String status; // "Pendente", "Vencida", "Pago"
+  final VoidCallback? onTap;
 
   const AccountListItem({
     super.key,
@@ -15,6 +16,7 @@ class AccountListItem extends StatelessWidget {
     required this.date,
     this.time,
     required this.status,
+    this.onTap,
   });
 
   @override
@@ -36,29 +38,18 @@ class AccountListItem extends StatelessWidget {
       itemIcon = Icons.check_box;
     }
 
-    return GestureDetector(
-      onTap: () {
-        Navigator.of(context).pushNamed(
-          '/cadastro_edicao_conta',
-          arguments: {
-            'id': 'someId',
-            'name': name,
-            'value': value,
-            'date': date,
-            'time': time,
-            'status': status,
-          },
-        );
-      },
-      child: Card(
-        margin: const EdgeInsets.symmetric(vertical: 8),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-          side: BorderSide(
-            color: itemColor.withAlpha((0.7 * 255).round()),
-            width: 1.5,
-          ),
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+        side: BorderSide(
+          color: itemColor.withAlpha((0.7 * 255).round()),
+          width: 1.5,
         ),
+      ),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(10),
         child: Padding(
           padding: const EdgeInsets.all(12),
           child: Row(

@@ -4,6 +4,8 @@ import '../widgets/account_list_item.dart';
 import '../services/auth_service.dart';
 import '../repositories/conta_repository.dart';
 import '../models/conta.dart';
+import '../screens/cadastro_edicao_conta_screen.dart';
+import 'cadastro_edicao_conta_screen.dart';
 
 class ListagemContasScreen extends StatefulWidget {
   const ListagemContasScreen({super.key});
@@ -140,7 +142,11 @@ class _ListagemContasScreenState extends State<ListagemContasScreen> {
       // Lista de Contas
       for (final conta in contasStatus) {
         widgets.add(
-          GestureDetector(
+          AccountListItem(
+            name: conta.nome,
+            value: _formatarMoeda(conta.valor),
+            date: conta.dataVencimento.toLocal().toString().split(' ')[0],
+            status: conta.status,
             onTap: () async {
               final result = await Navigator.of(context).pushNamed(
                 '/cadastro_edicao_conta',
@@ -150,12 +156,6 @@ class _ListagemContasScreenState extends State<ListagemContasScreen> {
                 _carregarContas();
               }
             },
-            child: AccountListItem(
-              name: conta.nome,
-              value: _formatarMoeda(conta.valor),
-              date: conta.dataVencimento.toLocal().toString().split(' ')[0],
-              status: conta.status,
-            ),
           ),
         );
       }
