@@ -20,7 +20,7 @@ class _CadastroEdicaoContaScreenState extends State<CadastroEdicaoContaScreen> {
   final _valorController = TextEditingController();
   final _dateController = TextEditingController();
   final _timeController = TextEditingController();
-  
+
   final _authService = AuthService();
   final _contaRepository = ContaRepository();
 
@@ -28,50 +28,27 @@ class _CadastroEdicaoContaScreenState extends State<CadastroEdicaoContaScreen> {
   bool _carregando = false;
   String? _erro;
   Conta? _contaEditando;
-  bool _dadosCarregados = false;
 
   @override
   void initState() {
     super.initState();
-    // Se a tela foi criada com uma conta (construtor), usa-a
+    // Se uma conta foi passada via construtor (modo de edição),
+    // preenche os campos do formulário com os dados existentes.
     if (widget.conta != null) {
-      _carregarDadosConta(widget.conta!);
-    }
-  }
+      _contaEditando = widget.conta;
+      _nomeController.text = _contaEditando!.nome;
+      _descricaoController.text = _contaEditando!.descricao ?? '';
+      _valorController.text = _contaEditando!.valor.toString();
+      _dateController.text =
+          _contaEditando!.dataVencimento.toString().split(' ')[0];
+      _timeController.text = _contaEditando!.horaVencimento ?? '';
+      _selectedStatus = _contaEditando!.status;
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    
-    // Carrega apenas uma vez
-    if (_dadosCarregados) return;
-    
-    // Se não veio pelo construtor, tenta pegar dos arguments da rota
-    if (widget.conta == null) {
-      final arguments = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
-      
-      if (arguments != null && arguments['conta'] != null) {
-        final conta = arguments['conta'] as Conta;
-        _carregarDadosConta(conta);
-      }
+      print('📝 Conta carregada para edição:');
+      print('   ID: ${_contaEditando!.id}');
+      print('   Nome: ${_contaEditando!.nome}');
+      print('   Valor: ${_contaEditando!.valor}');
     }
-    
-    _dadosCarregados = true;
-  }
-
-  void _carregarDadosConta(Conta conta) {
-    _contaEditando = conta;
-    _nomeController.text = conta.nome;
-    _descricaoController.text = conta.descricao ?? '';
-    _valorController.text = conta.valor.toString();
-    _dateController.text = conta.dataVencimento.toString().split(' ')[0];
-    _timeController.text = conta.horaVencimento ?? '';
-    _selectedStatus = conta.status;
-    
-    print('📝 Conta carregada para edição:');
-    print('   ID: ${conta.id}');
-    print('   Nome: ${conta.nome}');
-    print('   Valor: ${conta.valor}');
   }
 
   @override
@@ -101,7 +78,7 @@ class _CadastroEdicaoContaScreenState extends State<CadastroEdicaoContaScreen> {
               surface: AppColors.primaryDarkColor,
               onSurface: AppColors.textColorLight,
             ),
-            dialogTheme: const DialogThemeData(
+            dialogTheme: const DialogTheme(
               backgroundColor: AppColors.inputFieldBackground,
             ),
           ),
@@ -129,7 +106,7 @@ class _CadastroEdicaoContaScreenState extends State<CadastroEdicaoContaScreen> {
               surface: AppColors.primaryDarkColor,
               onSurface: AppColors.textColorLight,
             ),
-            dialogTheme: const DialogThemeData(
+            dialogTheme: const DialogTheme(
               backgroundColor: AppColors.inputFieldBackground,
             ),
           ),
@@ -146,8 +123,8 @@ class _CadastroEdicaoContaScreenState extends State<CadastroEdicaoContaScreen> {
 
   Future<void> _salvarConta() async {
     // Validar campos
-    if (_nomeController.text.isEmpty || 
-        _valorController.text.isEmpty || 
+    if (_nomeController.text.isEmpty ||
+        _valorController.text.isEmpty ||
         _dateController.text.isEmpty) {
       setState(() => _erro = 'Preencha todos os campos obrigatórios');
       return;
@@ -175,54 +152,51 @@ class _CadastroEdicaoContaScreenState extends State<CadastroEdicaoContaScreen> {
       if (_contaEditando == null) {
         // CRIAR NOVA CONTA
         print('➕ Criando nova conta...');
-        
+
         final novaConta = Conta(
           usuarioId: usuarioId,
           nome: _nomeController.text,
-          descricao: _descricaoController.text.isEmpty 
-              ? null 
+          descricao: _descricaoController.text.isEmpty
+              ? null
               : _descricaoController.text,
           valor: valor,
           dataVencimento: dataVencimento,
-          horaVencimento: _timeController.text.isEmpty 
-              ? null 
-              : _timeController.text,
+          horaVencimento:
+              _timeController.text.isEmpty ? null : _timeController.text,
           status: _selectedStatus,
         );
 
         final contaCriada = await _contaRepository.criar(novaConta);
-        
+
         if (contaCriada == null) {
           throw Exception('Erro ao salvar conta no banco de dados');
         }
-        
+
         print('✅ Nova conta criada com ID: ${contaCriada.id}');
-        
       } else {
         // ATUALIZAR CONTA EXISTENTE
         print('✏️ Atualizando conta ID: ${_contaEditando!.id}...');
-        
+
         final contaAtualizada = Conta(
           id: _contaEditando!.id, // ← IMPORTANTE: mantém o ID original
           usuarioId: usuarioId,
           nome: _nomeController.text,
-          descricao: _descricaoController.text.isEmpty 
-              ? null 
+          descricao: _descricaoController.text.isEmpty
+              ? null
               : _descricaoController.text,
           valor: valor,
           dataVencimento: dataVencimento,
-          horaVencimento: _timeController.text.isEmpty 
-              ? null 
-              : _timeController.text,
+          horaVencimento:
+              _timeController.text.isEmpty ? null : _timeController.text,
           status: _selectedStatus,
         );
 
         final sucesso = await _contaRepository.atualizar(contaAtualizada);
-        
+
         if (!sucesso) {
           throw Exception('Erro ao atualizar conta no banco de dados');
         }
-        
+
         print('✅ Conta atualizada com sucesso!');
       }
 
@@ -230,7 +204,6 @@ class _CadastroEdicaoContaScreenState extends State<CadastroEdicaoContaScreen> {
 
       // Voltar com sucesso
       Navigator.of(context).pop(true);
-      
     } catch (e) {
       print('❌ Erro ao salvar conta: $e');
       setState(() {
@@ -279,9 +252,9 @@ class _CadastroEdicaoContaScreenState extends State<CadastroEdicaoContaScreen> {
       final usuarioId = _authService.usuarioLogado?.id;
       if (usuarioId != null && _contaEditando != null) {
         print('🗑️ Deletando conta ID: ${_contaEditando!.id}...');
-        
+
         final sucesso = await _contaRepository.deletar(
-          _contaEditando!.id!, 
+          _contaEditando!.id!,
           usuarioId,
         );
 
@@ -378,7 +351,8 @@ class _CadastroEdicaoContaScreenState extends State<CadastroEdicaoContaScreen> {
             TextFormField(
               controller: _valorController,
               enabled: !_carregando,
-              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
               decoration: const InputDecoration(
                 labelText: 'Valor *',
                 prefixIcon: Icon(Icons.attach_money),
@@ -399,8 +373,8 @@ class _CadastroEdicaoContaScreenState extends State<CadastroEdicaoContaScreen> {
                         prefixIcon: Icon(Icons.calendar_today),
                       ),
                       child: Text(
-                        _dateController.text.isEmpty 
-                            ? 'Selecione' 
+                        _dateController.text.isEmpty
+                            ? 'Selecione'
                             : _dateController.text,
                       ),
                     ),
@@ -416,8 +390,8 @@ class _CadastroEdicaoContaScreenState extends State<CadastroEdicaoContaScreen> {
                         prefixIcon: Icon(Icons.access_time),
                       ),
                       child: Text(
-                        _timeController.text.isEmpty 
-                            ? 'Selecione' 
+                        _timeController.text.isEmpty
+                            ? 'Selecione'
                             : _timeController.text,
                       ),
                     ),
@@ -491,11 +465,13 @@ class _CadastroEdicaoContaScreenState extends State<CadastroEdicaoContaScreen> {
     bool isSelected = _selectedStatus == status;
     return Expanded(
       child: ElevatedButton(
-        onPressed: _carregando ? null : () {
-          setState(() {
-            _selectedStatus = status;
-          });
-        },
+        onPressed: _carregando
+            ? null
+            : () {
+                setState(() {
+                  _selectedStatus = status;
+                });
+              },
         style: ElevatedButton.styleFrom(
           backgroundColor: isSelected ? color : AppColors.inputFieldBackground,
           foregroundColor: isSelected

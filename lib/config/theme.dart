@@ -77,7 +77,7 @@ class AppTheme {
           textStyle: const TextStyle(fontSize: 16),
         ),
       ),
-      cardTheme: CardThemeData(
+      cardTheme: CardTheme(
         color: AppColors.inputFieldBackground,
         elevation: 4,
         shape: RoundedRectangleBorder(

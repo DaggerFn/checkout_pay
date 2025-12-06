@@ -41,7 +41,8 @@ class _RecuperacaoSenhaScreenState extends State<RecuperacaoSenhaScreen> {
       setState(() => _carregando = true);
 
       // Verificar se email existe no banco
-      final usuario = await _usuarioRepository.buscarPorEmail(_emailController.text);
+      final usuario =
+          await _usuarioRepository.buscarPorEmail(_emailController.text);
 
       if (usuario == null) {
         setState(() => _erro = 'Email não encontrado no sistema');
@@ -62,7 +63,8 @@ class _RecuperacaoSenhaScreenState extends State<RecuperacaoSenhaScreen> {
   Future<void> _redefinirSenha() async {
     setState(() => _erro = null);
 
-    if (_senhaController.text.isEmpty || _confirmaSenhaController.text.isEmpty) {
+    if (_senhaController.text.isEmpty ||
+        _confirmaSenhaController.text.isEmpty) {
       setState(() => _erro = 'Por favor, preencha todos os campos');
       return;
     }
@@ -72,7 +74,8 @@ class _RecuperacaoSenhaScreenState extends State<RecuperacaoSenhaScreen> {
       return;
     }
 
-    final validacaoErro = PasswordService.validatePassword(_senhaController.text);
+    final validacaoErro =
+        PasswordService.validatePassword(_senhaController.text);
     if (validacaoErro != null) {
       setState(() => _erro = validacaoErro);
       return;
@@ -129,7 +132,7 @@ class _RecuperacaoSenhaScreenState extends State<RecuperacaoSenhaScreen> {
                       Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: AppColors.dangerColor.withValues(alpha: 0.2),
+                          color: AppColors.dangerColor.withOpacity(0.2),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
